@@ -41,7 +41,7 @@ namespace TimeSheetBuilder
         public List<TimeEntry> GetTimeEntryList(DateTime startDate, DateTime endDate, string memberID)
         {
             var api = new TimeEntriesApi(apiClient);
-            var conditions = "Member/Identifier = '" + memberID + "' AND TimeStart >= [" + startDate.ToString("yyyy-MM-dd") + "] AND TimeStart <= [" + endDate.ToString("yyyy-MM-dd HH:mm:ss") + "]";
+            var conditions = "Member/Identifier = '" + memberID + "' AND TimeStart >= [" + startDate.ToString("yyyy-MM-dd HH:mm:ss") + "] AND TimeStart <= [" + endDate.ToString("yyyy-MM-dd HH:mm:ss") + "]";
 
             var response = api.GetEntries(conditions, "TimeStart, TimeEnd desc", null, null, null, 200);
             if (!response.IsSuccessResponse())
@@ -53,7 +53,7 @@ namespace TimeSheetBuilder
         public List<ScheduleEntry> GetScheduleEntryList(DateTime startDate, DateTime endDate, string memberID)
         {
             var api = new ScheduleEntriesApi(apiClient);
-            var conditions = "Member/Identifier = '" + memberID + "' AND DateStart >= [" + startDate.ToString("yyyy-MM-dd") + "] AND DateStart <= [" + endDate.AddDays(1).ToString("yyyy-MM-dd") + "] AND DoneFlag = false";
+            var conditions = "Member/Identifier = '" + memberID + "' AND DateStart >= [" + startDate.ToString("yyyy-MM-dd HH:mm:ss") + "Z] AND DateStart <= [" + endDate.ToString("yyyy-MM-dd HH:mm:ss") + "Z] AND DoneFlag = false";
 
             var response = api.GetEntries(conditions, "DateStart, DateEnd desc", null, null, null, 200);
             if (!response.IsSuccessResponse())
