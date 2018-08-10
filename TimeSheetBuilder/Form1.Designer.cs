@@ -214,7 +214,7 @@
             this.txtEndTime.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txtEndTime.Mask = "00:00";
             this.txtEndTime.Name = "txtEndTime";
-            this.txtEndTime.Size = new System.Drawing.Size(91, 26);
+            this.txtEndTime.Size = new System.Drawing.Size(87, 26);
             this.txtEndTime.TabIndex = 9;
             this.txtEndTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtEndTime.ValidatingType = typeof(System.DateTime);
@@ -329,7 +329,7 @@
             this.txtStartTime.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txtStartTime.Mask = "00:00";
             this.txtStartTime.Name = "txtStartTime";
-            this.txtStartTime.Size = new System.Drawing.Size(89, 26);
+            this.txtStartTime.Size = new System.Drawing.Size(87, 26);
             this.txtStartTime.TabIndex = 8;
             this.txtStartTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtStartTime.ValidatingType = typeof(System.DateTime);
@@ -411,7 +411,7 @@
             this.txtLunch.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txtLunch.Mask = "00:00";
             this.txtLunch.Name = "txtLunch";
-            this.txtLunch.Size = new System.Drawing.Size(89, 26);
+            this.txtLunch.Size = new System.Drawing.Size(87, 26);
             this.txtLunch.TabIndex = 10;
             this.txtLunch.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtLunch.ValidatingType = typeof(System.DateTime);
