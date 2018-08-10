@@ -55,7 +55,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.dtpPeriodEnd = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
-            this.dtpPerodStart = new System.Windows.Forms.DateTimePicker();
+            this.dtpPeriodStart = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
             this.txtLunch = new System.Windows.Forms.MaskedTextBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -387,12 +387,12 @@
             // 
             // dtpPerodStart
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.dtpPerodStart, 3);
-            this.dtpPerodStart.Location = new System.Drawing.Point(108, 44);
-            this.dtpPerodStart.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.dtpPerodStart.Name = "dtpPerodStart";
-            this.dtpPerodStart.Size = new System.Drawing.Size(287, 26);
-            this.dtpPerodStart.TabIndex = 5;
+            this.tableLayoutPanel1.SetColumnSpan(this.dtpPeriodStart, 3);
+            this.dtpPeriodStart.Location = new System.Drawing.Point(108, 44);
+            this.dtpPeriodStart.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.dtpPeriodStart.Name = "dtpPerodStart";
+            this.dtpPeriodStart.Size = new System.Drawing.Size(287, 26);
+            this.dtpPeriodStart.TabIndex = 5;
             // 
             // label1
             // 
@@ -425,7 +425,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.Controls.Add(this.txtLunch, 1, 5);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.dtpPerodStart, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.dtpPeriodStart, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.dtpPeriodEnd, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 3);
@@ -592,7 +592,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.MaskedTextBox txtLunch;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DateTimePicker dtpPerodStart;
+        private System.Windows.Forms.DateTimePicker dtpPeriodStart;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DateTimePicker dtpPeriodEnd;
         private System.Windows.Forms.Label label3;

@@ -47,21 +47,65 @@ namespace TimeSheetBuilder
         {
             try
             {
+                if (!checkRequiredFields())
+                    return;
+
                 btnBuildTimeSheet.Enabled = false;
                 saveProperties();
 
                 var tsb = new TimeSheetBuilder();
-                tsb.UpdateProgress += handleUpdateProgress;
-                tsb.BuildTimeSheet(dtpPerodStart.Value.ToUniversalTime(), dtpPeriodEnd.Value.AddDays(1).AddSeconds(-1).ToUniversalTime(), txtMemberID.Text, txtStartTime.Text, txtEndTime.Text, txtLunch.Text, txtAdminCode.Text);
+                tsb.ShowMessage += handleShowMessage;
+                tsb.BuildTimeSheet(dtpPeriodStart.Value.ToUniversalTime(), dtpPeriodEnd.Value.AddDays(1).AddSeconds(-1).ToUniversalTime(), txtMemberID.Text, txtStartTime.Text, txtEndTime.Text, txtLunch.Text, txtAdminCode.Text);
             }
             catch (Exception ex)
             {
-                handleUpdateProgress(ex.Message);
+                handleShowMessage(ex.Message, true);
             }
             finally
             {
                 btnBuildTimeSheet.Enabled = true;
             }
+        }
+
+        private bool checkRequiredFields()
+        {
+            if (string.IsNullOrEmpty(txtMemberID.Text))
+            {
+                handleShowMessage("Member ID is required.", true);
+                return false;
+            }
+            if (dtpPeriodStart.Value <= DateTime.MinValue)
+            {
+                handleShowMessage("Period Start is required.", true);
+                return false;
+            }
+            if (dtpPeriodEnd.Value <= DateTime.MinValue)
+            {
+                handleShowMessage("Period End is required.", true);
+                return false;
+            }
+            if (dtpPeriodEnd.Value < dtpPeriodStart.Value)
+            {
+                handleShowMessage("Start Date must be before End Date.", true);
+                return false;
+            }
+            if (string.IsNullOrEmpty(txtAdminCode.Text))
+            {
+                handleShowMessage("Admin Code is required.", true);
+                return false;
+            }
+            if (txtStartTime.Text == "  :")
+            {
+                handleShowMessage("Start Time is required.", true);
+                return false;
+            }
+            if (txtEndTime.Text == "  :")
+            {
+                handleShowMessage("End Time is required.", true);
+                return false;
+            }
+
+            return true;
         }
 
         private void checkApiKeys()
@@ -76,7 +120,7 @@ namespace TimeSheetBuilder
 
         private void loadDefaultValues()
         {
-            dtpPerodStart.Value = DateTime.Today;
+            dtpPeriodStart.Value = DateTime.Today;
             dtpPeriodEnd.Value = DateTime.Today;
             txtMemberID.Text = Properties.Settings.Default["memberid"].ToString();
             txtStartTime.Text = Properties.Settings.Default["starttime"].ToString();
@@ -100,34 +144,36 @@ namespace TimeSheetBuilder
             Properties.Settings.Default.Save();
         }
 
-        private void handleUpdateProgress(string message)
+        private void handleShowMessage(string message, bool isError)
         {
+            lblProgress.ForeColor = isError ? Color.Red : Color.FromKnownColor(KnownColor.HotTrack);
+
             lblProgress.Text = message;
             Application.DoEvents();
         }
 
         private void btnToday_Click(object sender, EventArgs e)
         {
-            dtpPerodStart.Value = DateTime.Today;
+            dtpPeriodStart.Value = DateTime.Today;
             dtpPeriodEnd.Value = DateTime.Today;
         }
 
         private void btnThisWeek_Click(object sender, EventArgs e)
         {
-            dtpPerodStart.Value = getThisMonday();
-            dtpPeriodEnd.Value = dtpPerodStart.Value.AddDays(4);
+            dtpPeriodStart.Value = getThisMonday();
+            dtpPeriodEnd.Value = dtpPeriodStart.Value.AddDays(4);
         }
 
         private void btnLastWeek_Click(object sender, EventArgs e)
         {
-            dtpPerodStart.Value = getThisMonday().AddDays(-7);
-            dtpPeriodEnd.Value = dtpPerodStart.Value.AddDays(4);
+            dtpPeriodStart.Value = getThisMonday().AddDays(-7);
+            dtpPeriodEnd.Value = dtpPeriodStart.Value.AddDays(4);
         }
 
         private void btnYesterday_Click(object sender, EventArgs e)
         {
-            dtpPerodStart.Value = DateTime.Today.AddDays(-1);
-            dtpPeriodEnd.Value = dtpPerodStart.Value;
+            dtpPeriodStart.Value = DateTime.Today.AddDays(-1);
+            dtpPeriodEnd.Value = dtpPeriodStart.Value;
         }
 
         private void btnUpdateKeys_Click(object sender, EventArgs e)

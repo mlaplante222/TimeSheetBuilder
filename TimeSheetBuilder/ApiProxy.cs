@@ -96,13 +96,13 @@ namespace TimeSheetBuilder
                 new PatchOperation
                 {
                     Op = "replace",
-                    Path = "doneFlag",
+                    Path = "allowScheduleConflictsFlag",
                     Value = "true"
                 },
                 new PatchOperation
                 {
                     Op = "replace",
-                    Path = "allowScheduleConflictsFlag",
+                    Path = "doneFlag",
                     Value = "true"
                 }
             };

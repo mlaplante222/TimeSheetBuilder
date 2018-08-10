@@ -62,8 +62,8 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="connectwise-sdk-2018.4-pilot">
-      <HintPath>.\connectwise-sdk-2018.4-pilot.dll</HintPath>
+    <Reference Include="connectwise-sdk-2018.2-beta">
+      <HintPath>.\connectwise-sdk-2018.2-beta.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

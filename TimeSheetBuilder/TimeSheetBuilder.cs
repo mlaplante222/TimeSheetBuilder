@@ -8,7 +8,7 @@ namespace TimeSheetBuilder
     public class TimeSheetBuilder
     {
         private ApiProxy api;
-        public event UpdateProgressHandler UpdateProgress;
+        public event ShowMessageHandler ShowMessage;
 
         public void BuildTimeSheet(DateTime startDate, DateTime endDate, string memberID, string maxStart, string minEnd, string lunchDeduction, string adminChargeCode)
         {
@@ -59,11 +59,11 @@ namespace TimeSheetBuilder
 
         private void raiseProgressEvent(string message)
         {
-            var eh = UpdateProgress;
+            var eh = ShowMessage;
             if (eh != null)
-                eh(message);
+                eh(message, false);
         }
     }
 
-    public delegate void UpdateProgressHandler(string message);
+    public delegate void ShowMessageHandler(string message, bool isError);
 }

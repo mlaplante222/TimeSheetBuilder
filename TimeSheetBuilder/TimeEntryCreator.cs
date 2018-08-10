@@ -41,10 +41,6 @@ namespace TimeSheetBuilder
         {
             var currentDate = startDate.ToLocalTime();
             var localEndDate = endDate.ToLocalTime();
-            if (maxStart.Length > 2 && ! maxStart.Contains(":"))
-                MessageBox.Show("Please add colon to " + maxStart);
-            if (minEnd.Length > 2 && !minEnd.Contains(":"))
-                MessageBox.Show("Please add colon to " + minEnd);
             var start = maxStart.Split(':');
             var end = minEnd.Split(':');
             var lunch = lunchDeduction.Split(':');
