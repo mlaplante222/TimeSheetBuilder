@@ -72,44 +72,44 @@ namespace TimeSheetBuilder
             return response.GetResult<TimeEntry>();
         }
 
-        public void MarkScheduleAsDone(ScheduleEntry schedule)
-        {
-            var api = new ScheduleEntriesApi(apiClient);
-            if (schedule.DoneFlag.HasValue && schedule.DoneFlag.Value)
-                return;
-
-            schedule.DoneFlag = true;
-            schedule.AllowScheduleConflictsFlag = true;
-            var response = api.ReplaceEntryById(schedule.Id, schedule);
-            if (!response.IsSuccessResponse())
-                throw new ApplicationException(response.GetError().Message);
-        }
-
         //public void MarkScheduleAsDone(ScheduleEntry schedule)
         //{
         //    var api = new ScheduleEntriesApi(apiClient);
         //    if (schedule.DoneFlag.HasValue && schedule.DoneFlag.Value)
         //        return;
 
-        //    var patchOps = new List<PatchOperation>
-        //    {
-        //        new PatchOperation
-        //        {
-        //            Op = "replace",
-        //            Path = "doneFlag",
-        //            Value = "true"
-        //        },
-        //        new PatchOperation
-        //        {
-        //            Op = "replace",
-        //            Path = "allowScheduleConflictsFlag",
-        //            Value = "true"
-        //        }
-        //    };
-
-        //    var response = api.UpdateEntryById(schedule.Id, patchOps);
+        //    schedule.DoneFlag = true;
+        //    schedule.AllowScheduleConflictsFlag = true;
+        //    var response = api.ReplaceEntryById(schedule.Id, schedule);
         //    if (!response.IsSuccessResponse())
         //        throw new ApplicationException(response.GetError().Message);
         //}
+
+        public void MarkScheduleAsDone(ScheduleEntry schedule)
+        {
+            var api = new ScheduleEntriesApi(apiClient);
+            if (schedule.DoneFlag.HasValue && schedule.DoneFlag.Value)
+                return;
+
+            var patchOps = new List<PatchOperation>
+            {
+                new PatchOperation
+                {
+                    Op = "replace",
+                    Path = "doneFlag",
+                    Value = "true"
+                },
+                new PatchOperation
+                {
+                    Op = "replace",
+                    Path = "allowScheduleConflictsFlag",
+                    Value = "true"
+                }
+            };
+
+            var response = api.UpdateEntryById(schedule.Id, patchOps);
+            if (!response.IsSuccessResponse())
+                throw new ApplicationException(response.GetError().Message);
+        }
     }
 }

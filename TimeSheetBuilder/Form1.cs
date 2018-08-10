@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace TimeSheetBuilder
 {
     public partial class Form1 : Form
     {
+        private bool drag = false;
+        private Point startPoint = new Point(0, 0);
+
         public Form1()
         {
             InitializeComponent();
@@ -12,6 +16,7 @@ namespace TimeSheetBuilder
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            checkApiKeys();
             loadDefaultValues();
         }
 
@@ -56,6 +61,16 @@ namespace TimeSheetBuilder
             finally
             {
                 btnBuildTimeSheet.Enabled = true;
+            }
+        }
+
+        private void checkApiKeys()
+        {
+            var hVUKBayRaFJRSjL = Properties.Settings.Default["hVUKBayRaFJRSjL"].ToString();
+            var XmgJQbghcPMmtta = Properties.Settings.Default["XmgJQbghcPMmtta"].ToString();
+            if(string.IsNullOrEmpty(hVUKBayRaFJRSjL) || string.IsNullOrEmpty(XmgJQbghcPMmtta))
+            {
+                tableLayoutPanel2.BringToFront();
             }
         }
 
@@ -113,6 +128,57 @@ namespace TimeSheetBuilder
         {
             dtpPerodStart.Value = DateTime.Today.AddDays(-1);
             dtpPeriodEnd.Value = dtpPerodStart.Value;
+        }
+
+        private void btnUpdateKeys_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default["XmgJQbghcPMmtta"] = txtXmgJQbghcPMmtta.Text;
+            Properties.Settings.Default["hVUKBayRaFJRSjL"] = txthVUKBayRaFJRSjL.Text;
+            Properties.Settings.Default.Save();
+            tableLayoutPanel2.SendToBack();
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void pnlTop_MouseDown(object sender, MouseEventArgs e)
+        {
+            drag = true;
+            startPoint = new Point(e.X, e.Y);
+        }
+
+        private void pnlTop_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (drag)
+            {
+                Point p = PointToScreen(e.Location);
+                this.Location = new Point(p.X - startPoint.X, p.Y - startPoint.Y);
+            }
+        }
+
+        private void pnlTop_MouseUp(object sender, MouseEventArgs e)
+        {
+            drag = false;
+        }
+
+        private void btnSettings_Click(object sender, EventArgs e)
+        {
+            var XmgJQbghcPMmtta = Properties.Settings.Default["XmgJQbghcPMmtta"].ToString();
+            var hVUKBayRaFJRSjL = Properties.Settings.Default["hVUKBayRaFJRSjL"].ToString();
+
+            txthVUKBayRaFJRSjL.Text = hVUKBayRaFJRSjL;
+            txtXmgJQbghcPMmtta.Text = XmgJQbghcPMmtta;
+            if (!string.IsNullOrEmpty(XmgJQbghcPMmtta) && !string.IsNullOrEmpty(hVUKBayRaFJRSjL))
+                btnCancelKeys.Enabled = true;
+
+            tableLayoutPanel2.BringToFront();
+        }
+
+        private void btnCancelKeys_Click(object sender, EventArgs e)
+        {
+            tableLayoutPanel2.SendToBack();
         }
     }
 }
