@@ -63,7 +63,7 @@
             this.lblBottomBorder = new System.Windows.Forms.Label();
             this.pnlTop = new System.Windows.Forms.Panel();
             this.btnSettings = new System.Windows.Forms.Button();
-            this.label11 = new System.Windows.Forms.Label();
+            this.lblTitle = new System.Windows.Forms.Label();
             this.picLogo = new System.Windows.Forms.PictureBox();
             this.btnClose = new System.Windows.Forms.Button();
             this.tableLayoutPanel2.SuspendLayout();
@@ -385,12 +385,12 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Period End";
             // 
-            // dtpPerodStart
+            // dtpPeriodStart
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.dtpPeriodStart, 3);
             this.dtpPeriodStart.Location = new System.Drawing.Point(108, 44);
             this.dtpPeriodStart.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.dtpPeriodStart.Name = "dtpPerodStart";
+            this.dtpPeriodStart.Name = "dtpPeriodStart";
             this.dtpPeriodStart.Size = new System.Drawing.Size(287, 26);
             this.dtpPeriodStart.TabIndex = 5;
             // 
@@ -483,7 +483,7 @@
             // 
             this.pnlTop.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.pnlTop.Controls.Add(this.btnSettings);
-            this.pnlTop.Controls.Add(this.label11);
+            this.pnlTop.Controls.Add(this.lblTitle);
             this.pnlTop.Controls.Add(this.picLogo);
             this.pnlTop.Controls.Add(this.btnClose);
             this.pnlTop.Dock = System.Windows.Forms.DockStyle.Top;
@@ -507,15 +507,18 @@
             this.btnSettings.UseVisualStyleBackColor = true;
             this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
             // 
-            // label11
+            // lblTitle
             // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(45, 8);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(143, 18);
-            this.label11.TabIndex = 2;
-            this.label11.Text = "Timesheet Builder";
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.Location = new System.Drawing.Point(45, 8);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(143, 18);
+            this.lblTitle.TabIndex = 2;
+            this.lblTitle.Text = "Timesheet Builder";
+            this.lblTitle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlTop_MouseDown);
+            this.lblTitle.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pnlTop_MouseMove);
+            this.lblTitle.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pnlTop_MouseUp);
             // 
             // picLogo
             // 
@@ -527,6 +530,9 @@
             this.picLogo.Size = new System.Drawing.Size(32, 32);
             this.picLogo.TabIndex = 1;
             this.picLogo.TabStop = false;
+            this.picLogo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlTop_MouseDown);
+            this.picLogo.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pnlTop_MouseMove);
+            this.picLogo.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pnlTop_MouseUp);
             // 
             // btnClose
             // 
@@ -611,7 +617,7 @@
         private System.Windows.Forms.Panel pnlTop;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.PictureBox picLogo;
-        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.Button btnCancelKeys;

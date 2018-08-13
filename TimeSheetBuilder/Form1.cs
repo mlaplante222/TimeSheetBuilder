@@ -23,24 +23,12 @@ namespace TimeSheetBuilder
         private DateTime getThisMonday()
         {
             var today = DateTime.Today;
-            var numberOfDaysBack = 0;
-            switch (today.DayOfWeek)
+            while (today.DayOfWeek != DayOfWeek.Monday)
             {
-                case DayOfWeek.Friday:
-                    numberOfDaysBack = -4;
-                    break;
-                case DayOfWeek.Thursday:
-                    numberOfDaysBack = -3;
-                    break;
-                case DayOfWeek.Wednesday:
-                    numberOfDaysBack = -2;
-                    break;
-                case DayOfWeek.Tuesday:
-                    numberOfDaysBack = -1;
-                    break;
+                today.AddDays(-1);
             }
 
-            return today.AddDays(numberOfDaysBack);
+            return today;
         }
 
         private void btnBuildTimeSheet_Click(object sender, EventArgs e)
