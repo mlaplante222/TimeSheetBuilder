@@ -25,7 +25,7 @@ namespace TimeSheetBuilder
             var today = DateTime.Today;
             while (today.DayOfWeek != DayOfWeek.Monday)
             {
-                today.AddDays(-1);
+                today = today.AddDays(-1);
             }
 
             return today;
