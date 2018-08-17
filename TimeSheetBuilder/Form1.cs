@@ -134,7 +134,7 @@ namespace TimeSheetBuilder
 
         private void handleShowMessage(string message, bool isError)
         {
-            lblProgress.ForeColor = isError ? Color.Red : Color.FromKnownColor(KnownColor.HotTrack);
+            lblProgress.ForeColor = isError ? Color.Red : Color.Green;
 
             lblProgress.Text = message;
             Application.DoEvents();
