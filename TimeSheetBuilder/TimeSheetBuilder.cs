@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using ConnectWiseDotNetSDK.ConnectWise.Client.Schedule.Model;
 
 namespace TimeSheetBuilder
@@ -37,7 +37,7 @@ namespace TimeSheetBuilder
 
         private int getAndCacheChargeCodeId(string adminChargeCode)
         {
-            var adminChargeCodeId = ConversionUtils.GetInt(Properties.Settings.Default["adminchargecodeid"]);
+            var adminChargeCodeId = ConversionUtils.GetInt(ConfigSettings.GetValue("adminchargecodeid"));
             if (adminChargeCodeId == 0)
             {
                 raiseProgressEvent("Getting chargecode recid...");
@@ -45,7 +45,8 @@ namespace TimeSheetBuilder
                 if (adminChargeCodeId <= 0)
                     throw new ApplicationException("Invalid charge code entered.");
 
-                Properties.Settings.Default["adminchargecodeid"] = adminChargeCodeId.ToString();
+                ConfigSettings.SetValue("adminchargecodeid", adminChargeCodeId.ToString());
+                ConfigSettings.Save();
             }
 
             return adminChargeCodeId;

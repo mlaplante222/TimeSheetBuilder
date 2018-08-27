@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -16,6 +17,7 @@ namespace TimeSheetBuilder
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            Cryptography.CheckConfigEncryption();
             checkApiKeys();
             loadDefaultValues();
         }
@@ -98,11 +100,18 @@ namespace TimeSheetBuilder
 
         private void checkApiKeys()
         {
-            var hVUKBayRaFJRSjL = Properties.Settings.Default["hVUKBayRaFJRSjL"].ToString();
-            var XmgJQbghcPMmtta = Properties.Settings.Default["XmgJQbghcPMmtta"].ToString();
-            if(string.IsNullOrEmpty(hVUKBayRaFJRSjL) || string.IsNullOrEmpty(XmgJQbghcPMmtta))
+            try
             {
-                tableLayoutPanel2.BringToFront();
+                var hVUKBayRaFJRSjL = ConfigSettings.GetValue("hVUKBayRaFJRSjL");
+                var XmgJQbghcPMmtta = ConfigSettings.GetValue("XmgJQbghcPMmtta");
+                if (string.IsNullOrEmpty(hVUKBayRaFJRSjL) || string.IsNullOrEmpty(XmgJQbghcPMmtta))
+                {
+                    tableLayoutPanel2.BringToFront();
+                }    
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message + Environment.NewLine + e.StackTrace);
             }
         }
 
@@ -110,26 +119,26 @@ namespace TimeSheetBuilder
         {
             dtpPeriodStart.Value = DateTime.Today;
             dtpPeriodEnd.Value = DateTime.Today;
-            txtMemberID.Text = Properties.Settings.Default["memberid"].ToString();
-            txtStartTime.Text = Properties.Settings.Default["starttime"].ToString();
-            txtEndTime.Text = Properties.Settings.Default["endtime"].ToString();
-            txtAdminCode.Text = Properties.Settings.Default["adminchargecode"].ToString();
-            txtLunch.Text = Properties.Settings.Default["lunchdeduct"].ToString();
+            txtMemberID.Text = ConfigSettings.GetValue("memberid");
+            txtStartTime.Text = ConfigSettings.GetValue("starttime");
+            txtEndTime.Text = ConfigSettings.GetValue("endtime");
+            txtAdminCode.Text = ConfigSettings.GetValue("adminchargecode");
+            txtLunch.Text = ConfigSettings.GetValue("lunchdeduct");
         }
 
         private void saveProperties()
         {
             //if the charge code was changed, reset the recid to force it to be updated
-            var currentCode = Properties.Settings.Default["adminchargecode"].ToString();
+            var currentCode = ConfigSettings.GetValue("adminchargecode");
             if (txtAdminCode.Text == null || txtAdminCode.Text != currentCode)
-                Properties.Settings.Default["adminchargecodeid"] = "0";
+                ConfigSettings.SetValue("adminchargecodeid", "0");
 
-            Properties.Settings.Default["memberid"] = txtMemberID.Text;
-            Properties.Settings.Default["starttime"] = txtStartTime.Text;
-            Properties.Settings.Default["endtime"] = txtEndTime.Text;
-            Properties.Settings.Default["adminchargecode"] = txtAdminCode.Text;
-            Properties.Settings.Default["lunchdeduct"] = txtLunch.Text;
-            Properties.Settings.Default.Save();
+            ConfigSettings.SetValue("memberid", txtMemberID.Text);
+            ConfigSettings.SetValue("starttime", txtStartTime.Text);
+            ConfigSettings.SetValue("endtime", txtEndTime.Text);
+            ConfigSettings.SetValue("adminchargecode", txtAdminCode.Text);
+            ConfigSettings.SetValue("lunchdeduct", txtLunch.Text);
+            ConfigSettings.Save();
         }
 
         private void handleShowMessage(string message, bool isError)
@@ -166,9 +175,9 @@ namespace TimeSheetBuilder
 
         private void btnUpdateKeys_Click(object sender, EventArgs e)
         {
-            Properties.Settings.Default["XmgJQbghcPMmtta"] = txtXmgJQbghcPMmtta.Text;
-            Properties.Settings.Default["hVUKBayRaFJRSjL"] = txthVUKBayRaFJRSjL.Text;
-            Properties.Settings.Default.Save();
+            ConfigSettings.SetValue("XmgJQbghcPMmtta", txtXmgJQbghcPMmtta.Text);
+            ConfigSettings.SetValue("hVUKBayRaFJRSjL", txthVUKBayRaFJRSjL.Text);
+            ConfigSettings.Save();
             tableLayoutPanel2.SendToBack();
         }
 
@@ -199,8 +208,8 @@ namespace TimeSheetBuilder
 
         private void btnSettings_Click(object sender, EventArgs e)
         {
-            var XmgJQbghcPMmtta = Properties.Settings.Default["XmgJQbghcPMmtta"].ToString();
-            var hVUKBayRaFJRSjL = Properties.Settings.Default["hVUKBayRaFJRSjL"].ToString();
+            var XmgJQbghcPMmtta = ConfigSettings.GetValue("XmgJQbghcPMmtta");
+            var hVUKBayRaFJRSjL = ConfigSettings.GetValue("hVUKBayRaFJRSjL");
 
             txthVUKBayRaFJRSjL.Text = hVUKBayRaFJRSjL;
             txtXmgJQbghcPMmtta.Text = XmgJQbghcPMmtta;

@@ -4,8 +4,6 @@ using ConnectWiseDotNetSDK.ConnectWise.Client;
 using ConnectWiseDotNetSDK.ConnectWise.Client.Common.Model;
 using ConnectWiseDotNetSDK.ConnectWise.Client.Schedule.Api;
 using ConnectWiseDotNetSDK.ConnectWise.Client.Schedule.Model;
-using ConnectWiseDotNetSDK.ConnectWise.Client.System.Api;
-using ConnectWiseDotNetSDK.ConnectWise.Client.System.Model;
 using ConnectWiseDotNetSDK.ConnectWise.Client.Time.Api;
 using ConnectWiseDotNetSDK.ConnectWise.Client.Time.Model;
 
@@ -17,10 +15,10 @@ namespace TimeSheetBuilder
 
         public ApiProxy()
         {
-            apiClient = new ApiClient(Properties.Settings.Default["apicookie"].ToString());
-            apiClient.SetCompanyName(Properties.Settings.Default["apicompanyname"].ToString());
-            apiClient.SetSite(Properties.Settings.Default["apisite"].ToString());
-            apiClient.SetPublicPrivateKey(Properties.Settings.Default["hVUKBayRaFJRSjL"].ToString(), Properties.Settings.Default["XmgJQbghcPMmtta"].ToString());
+            apiClient = new ApiClient(ConfigSettings.GetValue("apicookie"));
+            apiClient.SetCompanyName(ConfigSettings.GetValue("apicompanyname"));
+            apiClient.SetSite(ConfigSettings.GetValue("apisite"));
+            apiClient.SetPublicPrivateKey(ConfigSettings.GetValue("hVUKBayRaFJRSjL"), ConfigSettings.GetValue("XmgJQbghcPMmtta"));
         }
 
         public int GetChargeCodeRecIDFromChargeCode(string chargeCodeName)
@@ -71,19 +69,6 @@ namespace TimeSheetBuilder
 
             return response.GetResult<TimeEntry>();
         }
-
-        //public void MarkScheduleAsDone(ScheduleEntry schedule)
-        //{
-        //    var api = new ScheduleEntriesApi(apiClient);
-        //    if (schedule.DoneFlag.HasValue && schedule.DoneFlag.Value)
-        //        return;
-
-        //    schedule.DoneFlag = true;
-        //    schedule.AllowScheduleConflictsFlag = true;
-        //    var response = api.ReplaceEntryById(schedule.Id, schedule);
-        //    if (!response.IsSuccessResponse())
-        //        throw new ApplicationException(response.GetError().Message);
-        //}
 
         public void MarkScheduleAsDone(ScheduleEntry schedule)
         {
