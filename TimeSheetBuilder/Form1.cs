@@ -175,9 +175,10 @@ namespace TimeSheetBuilder
 
         private void btnUpdateKeys_Click(object sender, EventArgs e)
         {
-            ConfigSettings.SetValue("XmgJQbghcPMmtta", txtXmgJQbghcPMmtta.Text);
-            ConfigSettings.SetValue("hVUKBayRaFJRSjL", txthVUKBayRaFJRSjL.Text);
+            ConfigSettings.SetValue("XmgJQbghcPMmtta", txtXmgJQbghcPMmtta.Text.Trim() == string.Empty ? ConfigSettings.GetValue("XmgJQbghcPMmtta") : txtXmgJQbghcPMmtta.Text);
+            ConfigSettings.SetValue("hVUKBayRaFJRSjL", txthVUKBayRaFJRSjL.Text.Trim() == string.Empty ? ConfigSettings.GetValue("hVUKBayRaFJRSjL") : txthVUKBayRaFJRSjL.Text);
             ConfigSettings.Save();
+
             tableLayoutPanel2.SendToBack();
         }
 
@@ -208,12 +209,11 @@ namespace TimeSheetBuilder
 
         private void btnSettings_Click(object sender, EventArgs e)
         {
-            var XmgJQbghcPMmtta = ConfigSettings.GetValue("XmgJQbghcPMmtta");
             var hVUKBayRaFJRSjL = ConfigSettings.GetValue("hVUKBayRaFJRSjL");
 
             txthVUKBayRaFJRSjL.Text = hVUKBayRaFJRSjL;
-            txtXmgJQbghcPMmtta.Text = XmgJQbghcPMmtta;
-            if (!string.IsNullOrEmpty(XmgJQbghcPMmtta) && !string.IsNullOrEmpty(hVUKBayRaFJRSjL))
+            txtXmgJQbghcPMmtta.Text = "          ";
+            if (!string.IsNullOrEmpty(ConfigSettings.GetValue("XmgJQbghcPMmtta").Trim()) && !string.IsNullOrEmpty(hVUKBayRaFJRSjL.Trim()))
                 btnCancelKeys.Enabled = true;
 
             tableLayoutPanel2.BringToFront();
