@@ -175,8 +175,8 @@ namespace TimeSheetBuilder
 
         private void btnUpdateKeys_Click(object sender, EventArgs e)
         {
-            ConfigSettings.SetValue("XmgJQbghcPMmtta", txtXmgJQbghcPMmtta.Text.Trim() == string.Empty ? ConfigSettings.GetValue("XmgJQbghcPMmtta") : txtXmgJQbghcPMmtta.Text);
-            ConfigSettings.SetValue("hVUKBayRaFJRSjL", txthVUKBayRaFJRSjL.Text.Trim() == string.Empty ? ConfigSettings.GetValue("hVUKBayRaFJRSjL") : txthVUKBayRaFJRSjL.Text);
+            ConfigSettings.SetValue("XmgJQbghcPMmtta", txtXmgJQbghcPMmtta.Text.Length > 0 && txtXmgJQbghcPMmtta.Text.Trim() == string.Empty ? ConfigSettings.GetValue("XmgJQbghcPMmtta") : txtXmgJQbghcPMmtta.Text);
+            ConfigSettings.SetValue("hVUKBayRaFJRSjL", txthVUKBayRaFJRSjL.Text.Length > 0 && txthVUKBayRaFJRSjL.Text.Trim() == string.Empty ? ConfigSettings.GetValue("hVUKBayRaFJRSjL") : txthVUKBayRaFJRSjL.Text);
             ConfigSettings.Save();
 
             tableLayoutPanel2.SendToBack();
