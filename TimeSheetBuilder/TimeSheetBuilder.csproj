@@ -66,8 +66,9 @@
     <ApplicationIcon>cwicon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="connectwise-sdk-2018.2-beta">
-      <HintPath>.\connectwise-sdk-2018.2-beta.dll</HintPath>
+    <Reference Include="connectwise-sdk-2018.6-beta, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\connectwise-sdk-2018.6-beta.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />

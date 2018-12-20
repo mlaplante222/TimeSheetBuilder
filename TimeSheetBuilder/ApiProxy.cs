@@ -15,7 +15,7 @@ namespace TimeSheetBuilder
 
         public ApiProxy()
         {
-            apiClient = new ApiClient(ConfigSettings.GetValue("apicookie"));
+            apiClient = new ApiClient(ConfigSettings.GetValue("apicookie"), "TimesheetBuilder");
             apiClient.SetCompanyName(ConfigSettings.GetValue("apicompanyname"));
             apiClient.SetSite(ConfigSettings.GetValue("apisite"));
             apiClient.SetPublicPrivateKey(ConfigSettings.GetValue("hVUKBayRaFJRSjL"), ConfigSettings.GetValue("XmgJQbghcPMmtta"));
