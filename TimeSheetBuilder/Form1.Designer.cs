@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label8 = new System.Windows.Forms.Label();
@@ -59,13 +60,16 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtLunch = new System.Windows.Forms.MaskedTextBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.chkDone = new System.Windows.Forms.CheckBox();
             this.lblRightBorder = new System.Windows.Forms.Label();
             this.lblBottomBorder = new System.Windows.Forms.Label();
             this.pnlTop = new System.Windows.Forms.Panel();
+            this.btnHelp = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
             this.lblTitle = new System.Windows.Forms.Label();
             this.picLogo = new System.Windows.Forms.PictureBox();
             this.btnClose = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.pnlTop.SuspendLayout();
@@ -443,6 +447,7 @@
             this.tableLayoutPanel1.Controls.Add(this.label7, 0, 5);
             this.tableLayoutPanel1.Controls.Add(this.txtEndTime, 3, 4);
             this.tableLayoutPanel1.Controls.Add(this.label5, 2, 4);
+            this.tableLayoutPanel1.Controls.Add(this.chkDone, 2, 5);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 34);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
@@ -460,6 +465,18 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.Size = new System.Drawing.Size(409, 304);
             this.tableLayoutPanel1.TabIndex = 14;
+            // 
+            // chkDone
+            // 
+            this.chkDone.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.chkDone.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.chkDone, 2);
+            this.chkDone.Location = new System.Drawing.Point(206, 195);
+            this.chkDone.Name = "chkDone";
+            this.chkDone.Size = new System.Drawing.Size(187, 22);
+            this.chkDone.TabIndex = 16;
+            this.chkDone.Text = "Mark Schedules as Done";
+            this.chkDone.UseVisualStyleBackColor = true;
             // 
             // lblRightBorder
             // 
@@ -482,6 +499,7 @@
             // pnlTop
             // 
             this.pnlTop.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.pnlTop.Controls.Add(this.btnHelp);
             this.pnlTop.Controls.Add(this.btnSettings);
             this.pnlTop.Controls.Add(this.lblTitle);
             this.pnlTop.Controls.Add(this.picLogo);
@@ -494,6 +512,18 @@
             this.pnlTop.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlTop_MouseDown);
             this.pnlTop.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pnlTop_MouseMove);
             this.pnlTop.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pnlTop_MouseUp);
+            // 
+            // btnHelp
+            // 
+            this.btnHelp.FlatAppearance.BorderSize = 0;
+            this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnHelp.Image = ((System.Drawing.Image)(resources.GetObject("btnHelp.Image")));
+            this.btnHelp.Location = new System.Drawing.Point(301, 4);
+            this.btnHelp.Name = "btnHelp";
+            this.btnHelp.Size = new System.Drawing.Size(30, 26);
+            this.btnHelp.TabIndex = 4;
+            this.btnHelp.UseVisualStyleBackColor = true;
+            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
             // 
             // btnSettings
             // 
@@ -545,6 +575,10 @@
             this.btnClose.Text = "X";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Form1
             // 
@@ -621,6 +655,9 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.Button btnCancelKeys;
+        private System.Windows.Forms.CheckBox chkDone;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button btnHelp;
     }
 }
 

@@ -10,7 +10,7 @@ namespace TimeSheetBuilder
         private ApiProxy api;
         public event ShowMessageHandler ShowMessage;
 
-        public void BuildTimeSheet(DateTime startDate, DateTime endDate, string memberID, string maxStart, string minEnd, string lunchDeduction, string adminChargeCode)
+        public void BuildTimeSheet(DateTime startDate, DateTime endDate, string memberID, string maxStart, string minEnd, string lunchDeduction, string adminChargeCode, bool markSchedulesDone)
         {
             api = new ApiProxy();
            
@@ -29,9 +29,12 @@ namespace TimeSheetBuilder
             raiseProgressEvent("Creating admin time...");
             tec.CreateAdminTimeToFillGaps(startDate, endDate, maxStart, minEnd, lunchDeduction, timeList, memberID, adminChargeCodeId);
 
-            raiseProgressEvent("Marking schedules as Done...");
-            markSchedulesAsDone(scheduleList);
-
+            if(markSchedulesDone)
+            {
+                raiseProgressEvent("Marking schedules as Done...");
+                markSchedulesAsDone(scheduleList);
+            }
+                
             raiseProgressEvent("Time sheet has been updated.");
         }
 

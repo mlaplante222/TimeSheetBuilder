@@ -69,5 +69,21 @@ namespace TimeSheetBuilder
                 return 0;
             }
         }
+
+        public static bool GetBoolean(object obj)
+        {
+            try
+            {
+                return Convert.ToBoolean(obj);
+            }
+            catch (InvalidCastException)
+            {
+                return false;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+        }
     }
 }

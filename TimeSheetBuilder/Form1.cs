@@ -9,6 +9,8 @@ namespace TimeSheetBuilder
     {
         private bool drag = false;
         private Point startPoint = new Point(0, 0);
+        private bool firstLogin = false;
+        private int timerCount = 0;
 
         public Form1()
         {
@@ -20,6 +22,8 @@ namespace TimeSheetBuilder
             Cryptography.CheckConfigEncryption();
             checkApiKeys();
             loadDefaultValues();
+            if (firstLogin)
+                timer1.Start();
         }
 
         private DateTime getThisMonday()
@@ -45,7 +49,7 @@ namespace TimeSheetBuilder
 
                 var tsb = new TimeSheetBuilder();
                 tsb.ShowMessage += handleShowMessage;
-                tsb.BuildTimeSheet(dtpPeriodStart.Value.ToUniversalTime(), dtpPeriodEnd.Value.AddDays(1).AddSeconds(-1).ToUniversalTime(), txtMemberID.Text, txtStartTime.Text, txtEndTime.Text, txtLunch.Text, txtAdminCode.Text);
+                tsb.BuildTimeSheet(dtpPeriodStart.Value.ToUniversalTime(), dtpPeriodEnd.Value.AddDays(1).AddSeconds(-1).ToUniversalTime(), txtMemberID.Text, txtStartTime.Text, txtEndTime.Text, txtLunch.Text, txtAdminCode.Text, chkDone.Checked);
             }
             catch (Exception ex)
             {
@@ -124,6 +128,8 @@ namespace TimeSheetBuilder
             txtEndTime.Text = ConfigSettings.GetValue("endtime");
             txtAdminCode.Text = ConfigSettings.GetValue("adminchargecode");
             txtLunch.Text = ConfigSettings.GetValue("lunchdeduct");
+            chkDone.Checked = ConversionUtils.GetBoolean(ConfigSettings.GetValue("markschedulesdone"));
+            firstLogin = ConversionUtils.GetBoolean(ConfigSettings.GetValue("firstlogin"));
         }
 
         private void saveProperties()
@@ -138,6 +144,8 @@ namespace TimeSheetBuilder
             ConfigSettings.SetValue("endtime", txtEndTime.Text);
             ConfigSettings.SetValue("adminchargecode", txtAdminCode.Text);
             ConfigSettings.SetValue("lunchdeduct", txtLunch.Text);
+            ConfigSettings.SetValue("markschedulesdone", chkDone.Checked.ToString());
+            ConfigSettings.SetValue("firstlogin", firstLogin.ToString());
             ConfigSettings.Save();
         }
 
@@ -222,6 +230,35 @@ namespace TimeSheetBuilder
         private void btnCancelKeys_Click(object sender, EventArgs e)
         {
             tableLayoutPanel2.SendToBack();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (timerCount >= 14)
+            {
+                timer1.Stop();
+                chkDone.ForeColor = Color.FromKnownColor(KnownColor.HotTrack);
+                firstLogin = false;
+                return;
+            }
+
+            if (chkDone.ForeColor == Color.FromKnownColor(KnownColor.HotTrack))
+            {
+                chkDone.ForeColor = Color.GreenYellow;
+                timer1.Interval = 200;
+            }
+            else
+            {
+                chkDone.ForeColor = Color.FromKnownColor(KnownColor.HotTrack);
+                timer1.Interval = 200;
+            }
+
+            timerCount++;
+        }
+
+        private void btnHelp_Click(object sender, EventArgs e)
+        {
+            Process.Start(@"S:\development\mark\TimesheetBuilder\UserDocs.docx");
         }
     }
 }
