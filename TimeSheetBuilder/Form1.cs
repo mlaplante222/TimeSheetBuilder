@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace TimeSheetBuilder
@@ -53,7 +54,7 @@ namespace TimeSheetBuilder
             }
             catch (Exception ex)
             {
-                handleShowMessage(ex.Message, true);
+                handleShowMessage(this, new ShowMessageEventArgs(ex.Message, true));
             }
             finally
             {
@@ -65,37 +66,37 @@ namespace TimeSheetBuilder
         {
             if (string.IsNullOrEmpty(txtMemberID.Text))
             {
-                handleShowMessage("Member ID is required.", true);
+                handleShowMessage(this, new ShowMessageEventArgs("Member ID is required.", true));
                 return false;
             }
             if (dtpPeriodStart.Value <= DateTime.MinValue)
             {
-                handleShowMessage("Period Start is required.", true);
+                handleShowMessage(this, new ShowMessageEventArgs("Period Start is required.", true));
                 return false;
             }
             if (dtpPeriodEnd.Value <= DateTime.MinValue)
             {
-                handleShowMessage("Period End is required.", true);
+                handleShowMessage(this, new ShowMessageEventArgs("Period End is required.", true));
                 return false;
             }
             if (dtpPeriodEnd.Value < dtpPeriodStart.Value)
             {
-                handleShowMessage("Start Date must be before End Date.", true);
+                handleShowMessage(this, new ShowMessageEventArgs("Start Date must be before End Date.", true));
                 return false;
             }
             if (string.IsNullOrEmpty(txtAdminCode.Text))
             {
-                handleShowMessage("Admin Code is required.", true);
+                handleShowMessage(this, new ShowMessageEventArgs("Admin Code is required.", true));
                 return false;
             }
             if (txtStartTime.Text == "  :")
             {
-                handleShowMessage("Start Time is required.", true);
+                handleShowMessage(this, new ShowMessageEventArgs("Start Time is required.", true));
                 return false;
             }
             if (txtEndTime.Text == "  :")
             {
-                handleShowMessage("End Time is required.", true);
+                handleShowMessage(this, new ShowMessageEventArgs("End Time is required.", true));
                 return false;
             }
 
@@ -142,18 +143,18 @@ namespace TimeSheetBuilder
             ConfigSettings.SetValue("memberid", txtMemberID.Text);
             ConfigSettings.SetValue("starttime", txtStartTime.Text);
             ConfigSettings.SetValue("endtime", txtEndTime.Text);
-            ConfigSettings.SetValue("adminchargecode", txtAdminCode.Text);
+            ConfigSettings.SetValue("adminchargecode",txtAdminCode.Text);
             ConfigSettings.SetValue("lunchdeduct", txtLunch.Text);
             ConfigSettings.SetValue("markschedulesdone", chkDone.Checked.ToString());
             ConfigSettings.SetValue("firstlogin", firstLogin.ToString());
             ConfigSettings.Save();
         }
 
-        private void handleShowMessage(string message, bool isError)
+        private void handleShowMessage(object sender, ShowMessageEventArgs e)
         {
-            lblProgress.ForeColor = isError ? Color.Red : Color.Green;
+            lblProgress.ForeColor = e.IsError ? Color.Red : Color.Green;
 
-            lblProgress.Text = message;
+            lblProgress.Text = e.Message;
             Application.DoEvents();
         }
 

@@ -17,7 +17,7 @@ namespace TimeSheetBuilder
             this.api = api;
         }
 
-        public List<TimeEntry> CreateTimeEntriesForSchedules(List<TimeEntry> timeEntries, List<ScheduleEntry> scheduleEntries, string memberID, int chargeCodeRecId)
+        public List<TimeEntry> CreateTimeEntriesForSchedules(List<TimeEntry> timeEntries, List<ScheduleEntry> scheduleEntries, string memberID, ChargeTo chargeTo)
         {
             foreach (var schedule in scheduleEntries)
             {
@@ -27,7 +27,7 @@ namespace TimeSheetBuilder
 
                 try
                 {
-                    var timeEntry = addNewTimeEntryFromSchedule(schedule, memberID, chargeCodeRecId);
+                    var timeEntry = addNewTimeEntryFromSchedule(schedule, memberID, chargeTo);
                     if (timeEntry != null)
                         timeEntries.Add(timeEntry);
                 }
@@ -37,7 +37,7 @@ namespace TimeSheetBuilder
             return timeEntries;
         }
 
-        public void CreateAdminTimeToFillGaps(DateTime startDate, DateTime endDate, string maxStart, string minEnd, string lunchDeduction, List<TimeEntry> timeEntries, string memberID, int adminChargeCodeId)
+        public void CreateAdminTimeToFillGaps(DateTime startDate, DateTime endDate, string maxStart, string minEnd, string lunchDeduction, List<TimeEntry> timeEntries, string memberID, ChargeTo chargeTo)
         {
             var currentDate = startDate.ToLocalTime();
             var localEndDate = endDate.ToLocalTime();
@@ -69,13 +69,13 @@ namespace TimeSheetBuilder
 
                 var maxHours = ConversionUtils.GetDouble(endTime.Subtract(startTime).TotalHours, 2);
                 if (totalHours < maxHours)
-                    addNewTimeEntry(startTime, endTime, totalHours, memberID, adminChargeCodeId);
+                    addNewTimeEntry(startTime, endTime, totalHours, memberID, chargeTo);
 
                 currentDate = currentDate.AddDays(1);
             }
         }
 
-        private void addNewTimeEntry(DateTime startTime, DateTime endTime, double hoursDeduct, string memberID, int adminChargeCodeId)
+        private void addNewTimeEntry(DateTime startTime, DateTime endTime, double hoursDeduct, string memberID, ChargeTo chargeTo)
         {
             var timeEntry = new TimeEntry
             {
@@ -88,8 +88,8 @@ namespace TimeSheetBuilder
                 TimeEnd = endTime,
                 HoursDeduct = hoursDeduct,
                 EnteredBy = memberID,
-                ChargeToType = TimeEntry.ChargeToTypeEnum.ChargeCode,
-                ChargeToId = adminChargeCodeId,
+                ChargeToType = chargeTo.TicketNumber == 0 ? TimeEntry.ChargeToTypeEnum.ChargeCode : TimeEntry.ChargeToTypeEnum.ServiceTicket,
+                ChargeToId = chargeTo.TicketNumber == 0 ? chargeTo.ChargeCodeId : chargeTo.TicketNumber,
                 AddToDetailDescriptionFlag = false,
                 AddToInternalAnalysisFlag = false,
                 AddToResolutionFlag = false
@@ -98,7 +98,7 @@ namespace TimeSheetBuilder
             api.CreateNewTimeEntry(timeEntry);
         }
 
-        private TimeEntry addNewTimeEntryFromSchedule(ScheduleEntry schedule, string memberID, int adminChargeCodeId)
+        private TimeEntry addNewTimeEntryFromSchedule(ScheduleEntry schedule, string memberID, ChargeTo chargeTo)
         {
             var startDate = schedule.DateStart.Value;
             var endDate = schedule.DateEnd.Value;
@@ -117,7 +117,7 @@ namespace TimeSheetBuilder
                 },
                 ChargeToType = chargeToType,
 
-                ChargeToId = chargeToType == TimeEntry.ChargeToTypeEnum.ChargeCode ? adminChargeCodeId : schedule.ObjectId.Value,
+                ChargeToId = chargeToType == TimeEntry.ChargeToTypeEnum.ChargeCode ? chargeTo.ChargeCodeId : schedule.ObjectId.Value,
                 HoursDeduct = 0,
                 TimeStart = startDate,
                 TimeEnd = endDate,
@@ -129,5 +129,16 @@ namespace TimeSheetBuilder
 
             return api.CreateNewTimeEntry(timeEntry);
         }
+    }
+
+    public class ChargeTo
+    {
+        private int ticketNumber;
+        private int chargeCodeId;
+        private string chargeCode;
+
+        public int TicketNumber { get => ticketNumber; set => ticketNumber = value; }
+        public int ChargeCodeId { get => chargeCodeId; set => chargeCodeId = value; }
+        public string ChargeCode { get => chargeCode; set => chargeCode = value; }
     }
 }

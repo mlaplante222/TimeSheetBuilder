@@ -13,8 +13,17 @@ namespace TimeSheetBuilder
         public void BuildTimeSheet(DateTime startDate, DateTime endDate, string memberID, string maxStart, string minEnd, string lunchDeduction, string adminChargeCode, bool markSchedulesDone)
         {
             api = new ApiProxy();
-           
-            var adminChargeCodeId = getAndCacheChargeCodeId(adminChargeCode);
+            var chargeTo = new ChargeTo();
+            
+            if (adminChargeCode.All(char.IsNumber) && int.TryParse(adminChargeCode, out int t))
+            {
+                chargeTo.TicketNumber = t;
+            }
+            else
+            {
+                chargeTo.ChargeCode = adminChargeCode;
+                chargeTo.ChargeCodeId = getAndCacheChargeCodeId(adminChargeCode);
+            } 
 
             raiseProgressEvent("Getting existing time entries...");
             var timeList = api.GetTimeEntryList(startDate, endDate, memberID);
@@ -24,24 +33,24 @@ namespace TimeSheetBuilder
 
             var tec = new TimeEntryCreator(api);
             raiseProgressEvent("Creating time entries...");
-            timeList = tec.CreateTimeEntriesForSchedules(timeList, scheduleList, memberID, adminChargeCodeId);
+            timeList = tec.CreateTimeEntriesForSchedules(timeList, scheduleList, memberID, chargeTo);
 
             raiseProgressEvent("Creating admin time...");
-            tec.CreateAdminTimeToFillGaps(startDate, endDate, maxStart, minEnd, lunchDeduction, timeList, memberID, adminChargeCodeId);
+            tec.CreateAdminTimeToFillGaps(startDate, endDate, maxStart, minEnd, lunchDeduction, timeList, memberID, chargeTo);
 
-            if(markSchedulesDone)
+            if (markSchedulesDone)
             {
                 raiseProgressEvent("Marking schedules as Done...");
                 markSchedulesAsDone(scheduleList);
             }
-                
+
             raiseProgressEvent("Time sheet has been updated.");
         }
 
         private int getAndCacheChargeCodeId(string adminChargeCode)
         {
             var adminChargeCodeId = ConversionUtils.GetInt(ConfigSettings.GetValue("adminchargecodeid"));
-            if (adminChargeCodeId == 0)
+            if (adminChargeCodeId == 0 && !string.IsNullOrEmpty(adminChargeCode))
             {
                 raiseProgressEvent("Getting chargecode recid...");
                 adminChargeCodeId = api.GetChargeCodeRecIDFromChargeCode(adminChargeCode);
@@ -63,11 +72,19 @@ namespace TimeSheetBuilder
 
         private void raiseProgressEvent(string message)
         {
-            var eh = ShowMessage;
-            if (eh != null)
-                eh(message, false);
+            ShowMessage?.Invoke(this, new ShowMessageEventArgs(message, false));
         }
     }
 
-    public delegate void ShowMessageHandler(string message, bool isError);
+    public class ShowMessageEventArgs : EventArgs
+    {
+        public string Message;
+        public bool IsError;
+        public ShowMessageEventArgs(string message, bool isError)
+        {
+            Message = message;
+            IsError = isError;
+        }
+    }
+    public delegate void ShowMessageHandler(object sender, ShowMessageEventArgs e);
 }
